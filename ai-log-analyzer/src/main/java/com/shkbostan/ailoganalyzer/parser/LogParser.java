@@ -18,7 +18,7 @@ public class LogParser {
         List<LogEntry> entries = new ArrayList<>();
 
         for (String line : rawLogs) {
-            // نمونه ساده: [2025-08-30 09:12:55] ERROR payment-service - NullPointerException
+            // [2025-08-30 09:12:55] ERROR payment-service - NullPointerException
             try {
                 String[] parts = line.split(" ", 5);
                 LocalDateTime timestamp = LocalDateTime.parse(parts[0].replace("[","") + "T" + parts[1]);

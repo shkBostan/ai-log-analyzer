@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class LogEntry {
     private LocalDateTime timestamp;
     private String level;    // INFO, ERROR, WARN
-    private String service;  // مثلا payment-service
+    private String service;  // like payment-service
     private String message;
 
     public LogEntry(LocalDateTime timestamp, String level, String service, String message) {
