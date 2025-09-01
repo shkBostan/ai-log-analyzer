@@ -6,11 +6,13 @@ import com.shkbostan.ailoganalyzer.service.AISummarizerService;
 import com.shkbostan.ailoganalyzer.service.LocalSummarizerService;
 import com.shkbostan.ailoganalyzer.ingestion.LogReader;
 import com.shkbostan.ailoganalyzer.analyzer.LogAnalyzer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+
 
 /**
  * Unified REST controller for log analysis and summarization.
@@ -28,6 +30,7 @@ import java.util.*;
  * @author
  *     s Bostan
  */
+@Slf4j
 @RestController
 @RequestMapping("/api/logs")
 public class UnifiedLogController {
@@ -45,16 +48,21 @@ public class UnifiedLogController {
 
     @PostMapping("/analyze")
     public Map<String, Object> analyzeLogFile(@RequestParam String path) {
+        log.info("Received request to analyze log file: {}", path);
+
         Map<String, Object> response = new HashMap<>();
         try {
             Path logPath = Paths.get("Logs").resolve(path).toAbsolutePath();
+            log.debug("Resolving path for log file: {}", path);
 
             if (!Files.exists(logPath)) {
                 response.put("error", "❌ File not found: " + logPath);
+                log.warn("Log file not found: {}", path);
                 return response;
             }
 
             // Step 1: Read logs
+            log.info("Reading and parsing logs from file: {}", path);
             LogReader reader = new LogReader(logPath.toString());
             List<String> rawLogs = reader.read();
             response.put("filePath", logPath.toString());
@@ -71,16 +79,20 @@ public class UnifiedLogController {
             response.put("localSummary", localSummary);
 
             try {
+                log.debug("Calling AI summarizer...");
                 String aiSummary = aiSummarizerService.summarizeWithAI(String.join("\n", rawLogs));
                 response.put("aiSummary", aiSummary);
             } catch (Exception e) {
                 // AI failed, keep aiSummary null or error message
                 response.put("aiError", e.getMessage());
+                log.error("AI summarization failed", e);
             }
 
         } catch (Exception e) {
+            log.error("Unexpected error during log analysis", e);
             response.put("error", "❌ Error processing log file: " + e.getMessage());
         }
+        log.info("Returning response with {} entries", response.size());
         return response;
     }
 }
