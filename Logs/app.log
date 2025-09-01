@@ -1,0 +1,5 @@
+[2025-08-30 09:12:55] ERROR payment-service - NullPointerException
+[2025-08-30 09:13:10] INFO payment-service - Payment successful
+[2025-08-30 09:14:00] ERROR auth-service - TimeoutException
+[2025-08-30 09:15:00] ERROR auth-service - TimeoutException
+[2025-08-30 09:16:00] ERROR auth-service - TimeoutException

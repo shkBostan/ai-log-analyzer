@@ -27,8 +27,8 @@ public class LogParser {
                 String timestampStr = line.substring(1, 20); // 2025-08-30 09:12:55
                 LocalDateTime timestamp = LocalDateTime.parse(timestampStr, FORMATTER);
 
-                // بقیه بخش‌ها رو جدا کن
-                String rest = line.substring(22); // بعد از "] "
+
+                String rest = line.substring(22);
                 String[] parts = rest.split(" ", 3); // level, service, message
 
                 String level = parts[0];
