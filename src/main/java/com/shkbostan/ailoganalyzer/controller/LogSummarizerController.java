@@ -61,10 +61,4 @@ public class LogSummarizerController {
         return response;
     }
 
-    private String aiSummarizer(String logs) {
-        // Call AI API here
-        // HTTP POST -> logs
-        // Get summarized text
-        return "AI Summary: ...";
-    }
 }
